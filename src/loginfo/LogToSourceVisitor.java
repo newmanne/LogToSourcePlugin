@@ -18,14 +18,12 @@ import com.google.common.collect.Lists;
 public class LogToSourceVisitor extends ASTVisitor {
 
 	private CompilationUnit compilationUnit;
-	private boolean foundMatch = false;
 	private final List<Integer> lineNumbers = Lists.newArrayList();
+	final Set<String> loggingFunctions = ImmutableSet.of("info");
 
 	public LogToSourceVisitor(CompilationUnit compilationUnit) {
 		this.compilationUnit = compilationUnit;
 	}
-
-	Set<String> loggingFunctions = ImmutableSet.of("info");
 
 	private boolean isLoggingFunction(MethodInvocation node) {
 		return loggingFunctions.contains(node.getName().toString());
@@ -33,8 +31,7 @@ public class LogToSourceVisitor extends ASTVisitor {
 
 	public boolean visit(MethodInvocation node) {
 		if (isLoggingFunction(node)) {
-			foundMatch = true;
-			int lineNumber = compilationUnit.getLineNumber(node
+			final int lineNumber = compilationUnit.getLineNumber(node
 					.getStartPosition());
 			lineNumbers.add(lineNumber);
 		}
@@ -43,7 +40,7 @@ public class LogToSourceVisitor extends ASTVisitor {
 	
 	/** return true if at least one log statement was found in the method */
 	public boolean foundMatch() {
-		return foundMatch;
+		return !lineNumbers.isEmpty();
 	}
 
 	public List<Integer> getLineNumbers() {

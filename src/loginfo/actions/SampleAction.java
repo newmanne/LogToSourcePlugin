@@ -1,6 +1,7 @@
 package loginfo.actions;
 
 import java.io.IOException;
+import java.rmi.activation.Activatable;
 
 import loginfo.LogsToSource;
 
@@ -28,14 +29,15 @@ public class SampleAction implements IWorkbenchWindowActionDelegate {
 	}
 
 	/**
-	 * The action has been activated. The argument of the
+	 * The action has been activated. The argumen`t of the
 	 * method represents the 'real' action sitting
 	 * in the workbench UI.
 	 * @see IWorkbenchWindowActionDelegate#run
 	 */
 	public void run(IAction action) {
 		try {
-			LogsToSource.logToSource();
+			LogsToSource logsToSource = new LogsToSource();
+			logsToSource.logToSource();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

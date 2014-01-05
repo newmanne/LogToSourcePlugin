@@ -25,22 +25,15 @@ import com.google.common.collect.Sets;
 
 public class LogsToSource {
 	
-	private static boolean shouldScan(IProject project) {
-		if (project.getName().startsWith("hadoop")) {
-			return true;
-		}
-		return false;
-	}
-	
-	public static void logToSource() throws IOException, CoreException {
+	public void logToSource() throws IOException, CoreException {
 		System.out.println("BEGIN RUN");
+		final long startTime = System.currentTimeMillis();
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 		IWorkspaceRoot root = workspace.getRoot();
 		// Get all projects in the workspace
 		IProject[] projects = root.getProjects();
 		// Loop over all projects
 		for (IProject project : projects) {
-			// this one project seems to cause trouble
 			if (shouldScan(project)) {
 				System.out.println("Scanning project " + project.getName());
 				try {
@@ -55,13 +48,16 @@ public class LogsToSource {
 					e.printStackTrace();
 				}
 			};
-
 		}
-
-		System.out.println("END RUN");
+		final long duration = System.currentTimeMillis() - startTime;
+		System.out.println("END RUN. Duration was " + duration / 1000 + "s");
+	}
+	
+	private boolean shouldScan(IProject project) {
+		return project.getName().startsWith("hadoop");
 	}
 
-	private static void createAST(IPackageFragment packageFragment)
+	private void createAST(IPackageFragment packageFragment)
 			throws JavaModelException {
 		for (ICompilationUnit compilationUnit : packageFragment
 				.getCompilationUnits()) {
@@ -70,7 +66,7 @@ public class LogsToSource {
 		}
 	}
 
-	private static CompilationUnit parse(ICompilationUnit unit) {
+	private CompilationUnit parse(ICompilationUnit unit) {
 		ASTParser parser = ASTParser.newParser(AST.JLS4);
 		parser.setKind(ASTParser.K_COMPILATION_UNIT);
 		parser.setSource(unit);
