@@ -54,6 +54,7 @@ public class LogsToSource {
 	}
 	
 	private boolean shouldScan(IProject project) {
+//		return project.getName().startsWith("kkk");
 		return project.getName().startsWith("hadoop");
 	}
 

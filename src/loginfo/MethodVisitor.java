@@ -27,12 +27,12 @@ public class MethodVisitor extends ASTVisitor {
 			final String className = node.getParent() instanceof TypeDeclaration ? ((TypeDeclaration) node.getParent()).getName().toString() : "anonymous class";
 
 			System.out.println("Log statements were found in class " + className +  " in method " + methodName + " at line numbers " + logToSourceVisitor.getLineNumbers());
-			try {
-				List<Object> matches = Callers.execute(node.resolveBinding().getJavaElement());
-				System.out.println("Callers:\n " + matches + "\n\n");
-			} catch (ExecutionException e) {
-				e.printStackTrace();
-			}
+//			try {
+//				List<Object> matches = Callers.execute(node.resolveBinding().getJavaElement());
+//				System.out.println("Callers:\n " + matches + "\n\n");
+//			} catch (ExecutionException e) {
+//				e.printStackTrace();
+//			}
 		}
 		return false;
 	}
