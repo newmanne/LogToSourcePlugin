@@ -21,7 +21,7 @@ public class LogToSourceVisitor extends ASTVisitor {
 
 	private CompilationUnit compilationUnit;
 	private final List<Integer> lineNumbers = Lists.newArrayList();
-	final Set<String> loggingFunctions = ImmutableSet.of("info");
+	final Set<String> loggingFunctions = ImmutableSet.of("info", "debug", "warn", "error");
 
 	public LogToSourceVisitor(CompilationUnit compilationUnit) {
 		this.compilationUnit = compilationUnit;
